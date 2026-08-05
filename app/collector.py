@@ -73,7 +73,7 @@ def _collect(notify: bool) -> None:
             except g2b_api.G2bApiError as e:
                 progress["errors"].append(f"{category}/{bid_type}: {e}")
             progress["done"] += 1
-        conn.commit()
+            conn.commit()  # 단계마다 커밋 — 쓰기 잠금을 짧게 유지
 
     progress.update(
         running=False,

@@ -37,11 +37,20 @@ CREATE TABLE IF NOT EXISTS notifications (
 """
 
 
+_schema_ready = False  # 스키마 생성은 프로세스당 1회면 충분
+
+
 def get_conn() -> sqlite3.Connection:
+    global _schema_ready
     DB_PATH.parent.mkdir(exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
+    # timeout: 다른 쪽이 쓰는 중이면 에러 대신 최대 30초 대기
+    conn = sqlite3.connect(DB_PATH, timeout=30)
     conn.row_factory = sqlite3.Row
-    conn.executescript(SCHEMA)
+    # WAL 모드: 수집(쓰기) 중에도 화면 조회(읽기)가 막히지 않게 한다
+    conn.execute("PRAGMA journal_mode=WAL")
+    if not _schema_ready:
+        conn.executescript(SCHEMA)
+        _schema_ready = True
     return conn
 
 
