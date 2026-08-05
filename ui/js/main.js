@@ -184,8 +184,7 @@ async function loadAwards() {
     return;
   }
   tbody.innerHTML = rows.map((r) => {
-    const rate = r.award_rate != null ? r.award_rate.toFixed(1) + "%"
-      : r.budget && r.award_amount ? ((r.award_amount / r.budget) * 100).toFixed(1) + "%" : "-";
+    const rate = r.award_rate != null ? r.award_rate.toFixed(1) + "%" : "-";
     return `<tr>
       <td class="title-cell">${r.title}</td>
       <td>${r.winner ?? "-"}</td>
