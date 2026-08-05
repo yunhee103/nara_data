@@ -2,6 +2,7 @@
 
 진행 상황은 progress 딕셔너리에 기록되어 화면의 업데이트 게이지에 표시된다.
 """
+import sqlite3
 import threading
 from datetime import datetime, timedelta
 
@@ -30,7 +31,11 @@ def run_collection(notify: bool = True) -> None:
         return
     try:
         _collect(notify)
+    except Exception as e:
+        # 어떤 예외가 나도 화면이 '수집 중'에 갇히지 않게 상태를 정리한다
+        progress["last_result"] = f"수집 중단: {e}"
     finally:
+        progress["running"] = False
         _run_lock.release()
 
 
@@ -70,7 +75,8 @@ def _collect(notify: bool) -> None:
                         continue  # 제외 키워드가 제목에 있으면 버림
                     if database.insert_announcement(conn, item):
                         new_items.append(item)
-            except g2b_api.G2bApiError as e:
+            except (g2b_api.G2bApiError, sqlite3.OperationalError) as e:
+                # API 오류든 DB 잠금이든 이 단계만 건너뛰고 다음 단계 계속
                 progress["errors"].append(f"{category}/{bid_type}: {e}")
             progress["done"] += 1
             conn.commit()  # 단계마다 커밋 — 쓰기 잠금을 짧게 유지
