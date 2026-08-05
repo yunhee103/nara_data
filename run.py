@@ -6,9 +6,19 @@
 3) pywebview로 자체 프로그램 창을 열어 화면 표시
    (WebView2가 없는 PC에서는 기본 브라우저로 대체)
 """
+import os
 import socket
+import sys
 import threading
 import time
+
+# 창 전용 exe(--windowed)는 터미널이 없어 표준 출력이 None이다.
+# uvicorn 로깅이 여기에 쓰려다 죽으므로, 빈 출력 통로로 대체한다.
+if getattr(sys, "frozen", False):
+    if sys.stdout is None:
+        sys.stdout = open(os.devnull, "w")
+    if sys.stderr is None:
+        sys.stderr = open(os.devnull, "w")
 
 import uvicorn
 
