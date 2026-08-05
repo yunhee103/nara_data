@@ -85,9 +85,11 @@ python run.py
 
 ```bash
 .venv\Scripts\pyinstaller build_exe.spec --noconfirm
+copy 사용설명서.txt dist\나라장터입찰정보\
 ```
 
 - 결과물: `dist\나라장터입찰정보\` 폴더 — 통째로 복사하면 **파이썬 없는 PC에서도 실행** 가능
+- 다른 사람에게 줄 때는 폴더 안 `data/` 폴더를 삭제하고 전달 (본인 API 키 포함되어 있음)
 - 설정·DB(`data/`)와 엑셀(`exports/`)은 exe 옆에 생성되므로 재패키징해도 유지됩니다
 - 코드를 수정하면 위 명령으로 다시 패키징해야 합니다 (개발 중에는 `python run.py`로 확인)
 

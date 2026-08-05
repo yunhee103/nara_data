@@ -1,8 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
 # exe 패키징 레시피 (PyInstaller)
 #
-# 사용법 (코드 수정 후 재패키징할 때마다 이 한 줄):
+# 사용법 (코드 수정 후 재패키징할 때마다 아래 두 줄):
 #   .venv\Scripts\pyinstaller build_exe.spec --noconfirm
+#   copy 사용설명서.txt dist\나라장터입찰정보\
 #
 # 결과물: dist\나라장터입찰정보\나라장터입찰정보.exe
 #   - ui/ 화면 파일은 exe 안에 함께 포장됨

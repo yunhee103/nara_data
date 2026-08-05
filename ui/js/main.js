@@ -258,4 +258,53 @@ $("#btn-save-settings").onclick = async () => {
   refreshStatus();
 };
 
+/* ── 사용성(UX) ─────────────────────────────── */
+
+/* 입력창에서 Enter = 그 탭의 조회 실행 */
+function bindEnter(ids, action) {
+  ids.forEach((id) =>
+    $(id).addEventListener("keydown", (e) => { if (e.key === "Enter") action(); }));
+}
+bindEnter(["#f-keyword", "#f-from", "#f-to", "#f-bmin", "#f-bmax"], loadAnnouncements);
+bindEnter(["#a-keyword"], loadAwards);
+bindEnter(["#n-keyword", "#n-from", "#n-to"], loadAlerts);
+
+/* 드롭다운은 고르는 즉시 조회 */
+$("#f-category").onchange = loadAnnouncements;
+$("#f-kwtag").onchange = loadAnnouncements;
+
+/* 필터 초기화 */
+$("#btn-reset").onclick = () => {
+  ["#f-keyword", "#f-from", "#f-to", "#f-bmin", "#f-bmax"].forEach((s) => ($(s).value = ""));
+  $("#f-category").value = "";
+  $("#f-kwtag").value = "";
+  loadAnnouncements();
+};
+
+/* 표 제목줄 클릭 정렬 (숫자/문자 자동 판별, 재클릭 시 역순) */
+function makeSortable(tableSel) {
+  const table = document.querySelector(tableSel);
+  table.querySelectorAll("thead th").forEach((th, idx) => {
+    th.onclick = () => {
+      const tbody = table.querySelector("tbody");
+      const rows = [...tbody.querySelectorAll("tr")].filter((r) => !r.classList.contains("empty-row"));
+      const dir = th.dataset.dir === "asc" ? -1 : 1;
+      table.querySelectorAll("thead th").forEach((h) => delete h.dataset.dir);
+      th.dataset.dir = dir === 1 ? "asc" : "desc";
+      rows.sort((a, b) => {
+        const x = a.cells[idx].innerText.trim();
+        const y = b.cells[idx].innerText.trim();
+        const nx = parseFloat(x.replace(/[,%]/g, ""));
+        const ny = parseFloat(y.replace(/[,%]/g, ""));
+        const cmp = !isNaN(nx) && !isNaN(ny) ? nx - ny : x.localeCompare(y, "ko");
+        return cmp * dir;
+      });
+      rows.forEach((r) => tbody.appendChild(r));
+    };
+  });
+}
+makeSortable("#tbl-search");
+makeSortable("#tbl-awards");
+makeSortable("#tbl-alerts");
+
 boot();
