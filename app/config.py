@@ -11,7 +11,7 @@ SETTINGS_PATH = DATA_DIR / "settings.json"
 
 DEFAULTS = {
     "api_key": "",                        # 공공데이터포털 일반 인증키(Decoding)
-    "keywords": ["경관조명", "전시관"],     # 검색 키워드 (예시, 설정 화면에서 수정)
+    "keywords": ["OCR", "챗봇", "검색엔진", "엘라스틱서치", "AI"],  # 검색 키워드 (설정 화면에서 수정)
     "exclude_keywords": [],               # 제외 키워드 — 제목에 포함되면 수집하지 않음
     "search_date_range_days": 7,          # 최근 N일 공고를 검색 (최대 365)
     "search_times": ["09:00", "16:30"],   # 예약 검색 시각 (HH:MM)
