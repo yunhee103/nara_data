@@ -31,10 +31,11 @@
 
 ```
 API_나라장터/
-├── PRD.md               제품 요구사항 정의서 (기능 변경 시 동기화)
 ├── requirements.txt     파이썬 의존성
 ├── run.py               진입점: 서버 + 스케줄러 + 자체 창 실행
+├── build_exe.spec       exe 패키징 레시피 (PyInstaller)
 ├── app/                 백엔드
+│   ├── paths.py         경로 일괄 관리 (개발/exe 환경 자동 구분)
 │   ├── config.py        설정 로드/저장 (API 키 위치)
 │   ├── database.py      SQLite 스키마 + 조회/저장
 │   ├── g2b_api.py       나라장터 OpenAPI 클라이언트
@@ -52,9 +53,11 @@ API_나라장터/
 
 ## 설치 및 실행
 
-### 1. 의존성 설치
+### 1. 가상환경 생성 및 의존성 설치
 
 ```bash
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -77,6 +80,16 @@ python run.py
 
 실행하면 자체 프로그램 창이 뜹니다. 처음 실행 시 [설정] 화면에서 발급받은 API 키를 입력하세요.
 (WebView2 런타임이 없는 PC에서는 자동으로 기본 브라우저로 대체 실행됩니다.)
+
+### 4. exe로 패키징 (배포용, 선택)
+
+```bash
+.venv\Scripts\pyinstaller build_exe.spec --noconfirm
+```
+
+- 결과물: `dist\나라장터입찰정보\` 폴더 — 통째로 복사하면 **파이썬 없는 PC에서도 실행** 가능
+- 설정·DB(`data/`)와 엑셀(`exports/`)은 exe 옆에 생성되므로 재패키징해도 유지됩니다
+- 코드를 수정하면 위 명령으로 다시 패키징해야 합니다 (개발 중에는 `python run.py`로 확인)
 
 ---
 

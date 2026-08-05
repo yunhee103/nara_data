@@ -1,0 +1,8 @@
+fastapi        # 로컬 백엔드 (데이터 API)
+uvicorn        # FastAPI 실행 서버
+pywebview      # 자체 프로그램 창 (내부에 웹 화면을 띄움)
+requests       # 나라장터 OpenAPI 호출용 HTTP 클라이언트
+openpyxl       # 엑셀(.xlsx) 내보내기
+winotify       # Windows 토스트 알림
+httpx          # 테스트용 (FastAPI TestClient)
+pyinstaller    # exe 패키징용 (배포 시에만 필요)

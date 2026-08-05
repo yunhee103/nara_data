@@ -1,0 +1,24 @@
+# 파이썬
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 로컬 데이터 (API 키·수집 DB — 절대 커밋 금지)
+data/
+exports/
+
+# IDE / 에디터
+.idea/
+.vscode/
+.claude/
+
+# 내부 기획 문서 (공개 리포에 올리지 않음)
+PRD.md
+
+# PyInstaller 빌드 산출물
+build/
+dist/
+*.spec
+# 빌드 레시피는 코드의 일부이므로 예외
+!build_exe.spec
